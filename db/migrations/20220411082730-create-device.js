@@ -30,7 +30,6 @@ module.exports = {
         type: Sequelize.STRING
       },
 
-
       // Add some colums to this table 
       lan_interfaces: {
         type: Sequelize.JSONB,

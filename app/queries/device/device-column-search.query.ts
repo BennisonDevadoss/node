@@ -11,7 +11,7 @@ const columnSearchQuery = (query: DeviceListQueryParams) => {
     const wanInterfaces = toUpper(query.wan_interfaces);
     const searchQueries: any = []
     console.log('column search Query ID is', id);
-    console.log('column search name in query', name)
+    console.log('column search name in query', name);
     if (id) {
         const idQuery = Sequelize.where(
             Sequelize.cast(Sequelize.col('Device.id'), 'varchar'), {
@@ -26,7 +26,8 @@ const columnSearchQuery = (query: DeviceListQueryParams) => {
         searchQueries.push(nameQuery)
     }
     if (uuid) {   // hardwareIdQuery
-        const UUIDQuery = { uuid: { [Op.iLike]: `%${uuid}%` } };
+        console.log('is UUID working??', uuid)
+        const UUIDQuery = { uuid: uuid };
         searchQueries.push(UUIDQuery)
     }
     if (lanInterfaces) {

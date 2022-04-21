@@ -1,3 +1,5 @@
+import { StringNullableChain } from "lodash";
+
 export const DEVICE_TYPE = {
   G1: 'G1',
   RASPBERRY_PI: 'Raspberry_Pi',
@@ -84,7 +86,7 @@ export interface DeviceListQueryParams {
   per_page?: number;
   id?: number;
   name?: string;
-  uuid?: string;
+  uuid?: StringNullableChain;
   lan_interfaces?: string;
   wan_interfaces?: string;
   type?: string;
@@ -95,4 +97,18 @@ export interface DeviceListQueryParams {
   organizatoin_id?: number
   latitude?: number;
   longitude?: number;
+}
+
+export interface DevicePaginator {
+  total: number;
+  per_page: number;
+  current_page: number;
+  last_page: number;
+  data: DeviceAttributes[]
+}
+
+
+export interface DeivceRowsAndCounts {
+  count: number;
+  rows: any[];
 }

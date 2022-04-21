@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest, FastifyError } from 'fastify';
 import * as service from '../services/device.service';
-import { DeviceAttributes, DeviceProvisionParams, DeviceUpdateAttributes, DeviceListQueryParams } from '../types'
+import { DeviceAttributes, DevicePaginator, DeviceUpdateAttributes, DeviceListQueryParams } from '../types'
 import { paginatorResult } from './lib/paginator-result';
 
 interface CreateBody { device: DeviceAttributes }
@@ -29,9 +29,8 @@ function update(req: FastifyRequest, reply: FastifyReply) {
         .then(() => {
             reply.send("Device updated successfully!!")
         })
-        .catch(err => {
+        .catch((err: FastifyError) => {
             reply.send(`Error is occurred ${err}`)
-
         })
 }
 
@@ -40,7 +39,7 @@ function list(req: FastifyRequest, reply: FastifyReply) {
     const query = req.query as DeviceListQueryParams
     console.log('Request query is', query);   //{ q: '1', visible_columns: 'id,name' }
     service.filterAndPagination(query)
-        .then((paginator: any) => {
+        .then((paginator: DevicePaginator) => {
             console.log('paginator is', paginator)  // 
             const devices = paginatorResult(paginator, 'devices');
             console.log('Devices is', devices)

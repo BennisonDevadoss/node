@@ -1,5 +1,9 @@
+import { DevicePaginator, DeivceRowsAndCounts } from '../../types'
 
-function paginatorResult(paginator, type) {
+type PaginatorType = DevicePaginator
+type PaginateType = DeivceRowsAndCounts
+
+function paginatorResult(paginator: PaginatorType, type: string) {
 
     console.log('paginator is', paginator)
     const totalPages = paginator.last_page;
@@ -7,9 +11,9 @@ function paginatorResult(paginator, type) {
     const perPage = paginator.per_page;
     const total = paginator.total
     const startAt = (currentPage - 1) * perPage + 1;
+
     const end = currentPage * perPage;
     const endAt = total < end ? total : end
-
     console.log('Paginator.Data is', paginator.data);
     const result = {
         [type]: paginator.data,
@@ -30,7 +34,7 @@ function paginatorResult(paginator, type) {
     return result;
 }
 
-function paginate(data, perPage: number, page: number) {
+function paginate(data: PaginateType, perPage: number, page: number) {
     console.log('Data is', data)
     const limit = perPage;
     const total = data.count;

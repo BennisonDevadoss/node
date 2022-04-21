@@ -104,7 +104,38 @@ const updateDeviceSchema = {
         }
     }
 }
+
+const listDeviceSchema = {
+    schema: {
+        // description: 'Request',
+        // type: 'object',
+        // properties: {
+        querystring: {
+            type: 'object',
+            properties: {
+                page: { type: 'number' },
+                perPage: { type: 'number' },
+                q: { type: 'string' },
+                id: { type: 'number' },
+                name: { type: 'string' },
+                uuid: { type: 'string' },
+                organization_id: { type: 'string' },
+                type: { type: 'string' },
+                lan_interfaces: { type: 'string' },
+                wan_interfaces: { type: 'string' },
+                os_version: { type: 'string' },
+                package_version: { type: 'string' },
+                mac_address: { type: 'string' },
+                latitude: { type: 'number' },
+                longitude: { type: 'number' },
+                description: { type: 'string' }
+            }
+        }
+    }
+}
+// }
 export {
     createDeviceSchema,
-    updateDeviceSchema
+    updateDeviceSchema,
+    listDeviceSchema
 }
