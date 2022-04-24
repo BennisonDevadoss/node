@@ -7,9 +7,10 @@ import { createDeviceSchema, updateDeviceSchema, listDeviceSchema } from './devi
 
 function deviceConfiguraions(fastify: FastifyInstance<Server, IncomingMessage, ServerResponse>, options: any, done: (err?: Error) => void) {
 
-    fastify.get('/devices', DeviceController.list)
     fastify.post('/devices', createDeviceSchema, DeviceController.create);
     fastify.put('/devices/:id', updateDeviceSchema, DeviceController.update)
+    fastify.get('/devices', DeviceController.list)
+
 
     done();
 }

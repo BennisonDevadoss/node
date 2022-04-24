@@ -18,36 +18,36 @@ const createDeviceSchema = {
                     }
                 }
             }
-        }
-    },
-    response: {
-        201: {
-            description: 'Successful response',
-            type: 'object',
-            properties: {
-                id: { type: 'number' },
-                name: { type: 'string' },
-                uuid: { type: 'string' },
-                type: { type: 'string' },
-                latitude: { type: 'number' },
-                longitude: { type: 'number' },
-                description: { type: 'string' }
+        },
+            response: {
+                201: {
+                    description: 'Successful response',
+                    type: 'object',
+                    properties: {
+                        id: { type: 'number' },
+                        name: { type: 'string' },
+                        uuid: { type: 'string' },
+                        type: { type: 'string' },
+                        latitude: { type: 'number' },
+                        longitude: { type: 'number' },
+                        description: { type: 'string' }
+                    }
+                }
+            },
+            422: {
+                description: 'Validation error',
+                type: 'object',
+                properties: {
+                    errors: { type: 'array', items: { type: 'string' } }
+                }
+            },
+            500: {
+                description: 'Something went wrong',
+                type: 'Object',
+                properties: {
+                    errors: { type: 'string', items: { type: 'string' } }
+                }
             }
-        }
-    },
-    422: {
-        description: 'Validation error!!',
-        type: 'object',
-        properties: {
-            errors: { type: 'string', items: { type: 'string' } }
-        }
-    },
-    500: {
-        description: 'Something went wrong',
-        type: 'Object',
-        properties: {
-            errors: { type: 'string', items: { type: 'string' } }
-        }
     }
 }
 
@@ -87,18 +87,18 @@ const updateDeviceSchema = {
                     description: { type: 'string' }
                 }
             },
-            422: {
+            417: {
                 description: 'Validataion Error!!',
                 type: 'object',
                 properties: {
-                    error: { type: 'string', items: { type: 'string' } }
+                    errors: { type: 'array', items: { type: 'string' } }
                 }
             },
             500: {
                 description: 'Something went to worng',
                 type: 'object',
                 properties: {
-                    error: { type: 'string', items: { type: 'string' } }
+                    errors: { type: 'array', items: { type: 'string' } }
                 }
             }
         }
@@ -107,9 +107,9 @@ const updateDeviceSchema = {
 
 const listDeviceSchema = {
     schema: {
-        // description: 'Request',
-        // type: 'object',
-        // properties: {
+        description: 'Request',
+        type: 'object',
+        properties: {
         querystring: {
             type: 'object',
             properties: {
@@ -133,7 +133,7 @@ const listDeviceSchema = {
         }
     }
 }
-// }
+}
 export {
     createDeviceSchema,
     updateDeviceSchema,

@@ -1,39 +1,42 @@
 import { FastifyReply, FastifyRequest, FastifyError } from 'fastify';
 import * as service from '../services/device.service';
 import { DeviceAttributes, DevicePaginator, DeviceUpdateAttributes, DeviceListQueryParams } from '../types'
-import { paginatorResult } from './lib/paginator-result';
+import { paginatorResult } from '../lib/paginator-result';
 
 interface CreateBody { device: DeviceAttributes }
 interface UpdateBody { provisioningDetail: DeviceUpdateAttributes }
 function create(req: FastifyRequest, reply: FastifyReply) {
     const { body } = req
     const attribute = (body as CreateBody).device
-    console.log('Attribute is', attribute)
-    const currentDevice: DeviceAttributes = attribute;
-    console.log('current Device is', currentDevice)
-    service.create(currentDevice)
+    service.create(attribute)
         .then((device) => {
-            reply.send(device);
+            console.log('Device is in the then function', device)
+            // if (device)
+                reply.code(200).send('Device Created successfully')
         })
         .catch((err) => {
+            console.log('error is', err);
             reply.send(err)
         })
 }
 
 function update(req: FastifyRequest, reply: FastifyReply) {
     const { body } = req;
-    // const { id } = params as { id: number };
     const attributes = (body as UpdateBody).provisioningDetail;
     console.log("attribute is ", attributes);
     service.update(attributes)
-        .then(() => {
-            reply.send("Device updated successfully!!")
+        .then((device) => {
+            if (device) {
+                reply.code(200).send("Device updated successfully!!")
+            }
+            else {
+                reply.code(404).send('Device not found')
+            }
         })
         .catch((err: FastifyError) => {
-            reply.send(`Error is occurred ${err}`)
+            reply.send(err)
         })
 }
-
 function list(req: FastifyRequest, reply: FastifyReply) {
 
     const query = req.query as DeviceListQueryParams

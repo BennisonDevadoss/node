@@ -1,4 +1,4 @@
-import { DevicePaginator, DeivceRowsAndCounts } from '../../types'
+import { DevicePaginator, DeivceRowsAndCounts } from '../types'
 
 type PaginatorType = DevicePaginator
 type PaginateType = DeivceRowsAndCounts

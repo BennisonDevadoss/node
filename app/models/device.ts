@@ -2,6 +2,7 @@
 import { DataTypes, Model, ModelDefined, Sequelize } from 'sequelize';
 import { DeviceAttributes, DeviceCreateAttributes } from '../types';
 import { isUUIDUnique } from './validations';
+import { isTypeValidation } from './validations/device.validation'
 export interface deviceInstance
   extends Model<DeviceAttributes, DeviceCreateAttributes>,
   DeviceAttributes { }
@@ -13,7 +14,20 @@ function Device(sequelize: Sequelize): DeviceModelDefined {
     {
       name: {
         allowNull: false,
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        validate: {
+          len: {
+            args: [3, 100],
+            msg: 'Name should be greater than 3 and less than equal to 100',
+          },
+          notNull: {
+            msg: 'Name should be present'
+          },
+          is: {
+            args: [/^[a-zA-Z0-9 _-]*$/],
+            msg: 'Only alphanumeric, space, hypen and underscore are allowed'
+          }
+        }
       },
       uuid: {
         allowNull: false,
@@ -42,7 +56,14 @@ function Device(sequelize: Sequelize): DeviceModelDefined {
       },
       type: {
         allowNull: false,
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        // values: ['Virtual CPE', ' Raspberry_Pi', 'G1']
+        validate: {
+          isTypeValidation,
+          notNull: {
+            msg: 'Device type should be present'
+          }
+        }
       },
       latitude: {
         allowNull: true,
