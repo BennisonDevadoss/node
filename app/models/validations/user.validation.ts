@@ -48,6 +48,7 @@ export function isOrgIdValidation(
 ) {
   if (organizationId) {
     const Organization = this.sequelize.models.Organization;
+    console.log("Organization is", Organization);
     Organization.findOne({
       where: { id: organizationId },
     })

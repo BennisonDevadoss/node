@@ -1,17 +1,19 @@
 'use strict';
 
 const bcrypt = require('bcrypt');
+// const { Sequelize } = require('sequelize/types');
 // const { queryInterface, Sequelize } = require('sequelize/types');
 
 const userAttributes = {
   name: 'ben',
-  email: 'bennisondevadoss2018@gmail.com',
+  email: 'bennisondevadoss@gmail.com',
   encrypted_password: bcrypt.hashSync('bennison', 10),  //bennison
   organization_id: 1,
   role: 'Super Admin',
   created_at: new Date(),
   updated_at: new Date(),
-  // is_otp_verified: false
+  confirmed_at: new Date(),
+  is_otp_verified: false
 }
 
 // async function generateHash(string, saltRounds = 10) {
@@ -28,5 +30,9 @@ module.exports = {
     await queryInterface.bulkInsert('users', [{
       ...userAttributes,
     }])
+  },
+
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete('users', { email: 'bennisondevadoss2018@gmail.com' });
   }
 }

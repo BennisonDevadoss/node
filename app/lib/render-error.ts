@@ -1,11 +1,11 @@
+import { FastifyError, FastifyReply } from 'fastify';
 import { map } from 'lodash';
 import {
+    DatabaseError,
     EmptyResultError,
-    ValidationError,
     UniqueConstraintError,
-    DatabaseError
+    ValidationError
 } from 'sequelize'
-import { FastifyReply, FastifyError } from 'fastify';
 import AssociationValidationError from './validation-association-error-msg';
 
 function renderError(reply: FastifyReply, errObj: FastifyError) {

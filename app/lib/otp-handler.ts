@@ -1,5 +1,6 @@
 import speakeasy from "speakeasy";
 import { SPEAK_EASY_CONFIG } from "../config";
+// import verifyOtp as OtpVerify from '../'
 
 function generateOtpSecretKey() {
   const secretKey = speakeasy.generateSecret({
@@ -16,4 +17,14 @@ function generateOtp(secret: string) {
     step: SPEAK_EASY_CONFIG.STEP,
   });
 }
-export { generateOtpSecretKey, generateOtp };
+
+function verifyOtp(secret: string, token: string) {
+  return speakeasy.totp.verify({
+    secret,
+    token,
+    encoding: SPEAK_EASY_CONFIG.ENCODING,
+    digits: SPEAK_EASY_CONFIG.DIGITS,
+    step: SPEAK_EASY_CONFIG.STEP,
+  });
+}
+export { generateOtpSecretKey, generateOtp, verifyOtp };

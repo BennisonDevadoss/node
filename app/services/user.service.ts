@@ -2,16 +2,25 @@
 import db from "../models";
 import logger from "../logger";
 import { generateTokenforTemp } from "../lib/jwt-handler";
-import { SigninAttributes } from "../types/user";
+import {
+  OTPVerifyAttributes,
+  SigninAttributes,
+  UserCreationAttributes,
+} from "../types/user";
 import { UserInstance } from "../models/users";
-import { Op } from "sequelize";
-import { generateOtp, generateOtpSecretKey } from "../lib/otp-handler";
+import {
+  generateOtp,
+  generateOtpSecretKey,
+  verifyOtp as OtpVerify,
+} from "../lib/otp-handler";
 import { verifyPassword } from "./session.service";
 import { sendOTP } from "../lib/node-mailer";
 import AssociationValidationError from "../lib/validation-association-error-msg";
+// import { verifyOtp as OtpVerify } from "../lib/otp-handler";
 
 const { User } = db;
-// console.log('DB', User)
+// console.log("user from the user.service file", User); //
+
 function frameUserLog(activity, currentUser) {
   const { organization } = currentUser;
   return {
@@ -24,7 +33,10 @@ function frameUserLog(activity, currentUser) {
   };
 }
 
-async function create(attributes, currentUser) {
+async function create(
+  attributes: UserCreationAttributes,
+  currentUser: UserInstance
+) {
   return User.create(attributes).then((user) => {
     const info = frameUserLog("User Creation", currentUser);
     logger.info(
@@ -50,7 +62,7 @@ async function findConfirmedUserByEmail(email: string) {
 
 function signin(attributes: SigninAttributes) {
   return findConfirmedUserByEmail(attributes.email).then(async (user) => {
-    console.log("User is ", user);
+    // console.log("User is ", user);
     if (user) {
       const otpSecretKey = await generateOtpSecretKey();
       const updatedUser = await user.update({ otp_secret_key: otpSecretKey }); // Why this is not taken as a sequelize function
@@ -70,7 +82,19 @@ function signin(attributes: SigninAttributes) {
   });
 }
 
-export = {
-  create,
-  signin,
-};
+async function verifyOtp(attributes: OTPVerifyAttributes) {
+  const user: UserInstance = await findConfirmedUserByEmail(attributes.email);
+  if (user) {
+    const isOtpValid = await OtpVerify(user.otp_secret_key, attributes.otp);
+    console.log("is OTP being verified", isOtpValid);
+    const currentDate = new Date();
+    user.is_otp_verified = !!isOtpValid;
+    console.log("is_otp_verified", user.is_otp_verified);
+    // if (user.is_otp_verified) {
+    // }
+    return user;
+  }
+  throw new AssociationValidationError("No User found");
+}
+
+export { create, signin, verifyOtp };

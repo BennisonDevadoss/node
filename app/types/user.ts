@@ -15,6 +15,7 @@ export interface UserAttributes {
   password: string;
   password_confirmation: string;
   otp_counter: number;
+  current_signin_at: Date;
   is_otp_verified: boolean;
   otp_secret_key: string;
   created_at: Date;
@@ -28,3 +29,9 @@ export type UserCreationAttributes = Pick<
 >;
 
 export type SigninAttributes = Pick<UserAttributes, "email" | "password">;
+
+export interface OTPVerifyAttributes {
+  ip: string;
+  email: string;
+  otp: string;
+}

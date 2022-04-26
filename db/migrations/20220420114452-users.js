@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false
       },
       encrypted_password: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       otp_counter: {
@@ -54,6 +54,10 @@ module.exports = {
       access_token: {
         allowNull: true,
         type: Sequelize.STRING
+      },
+      confirmed_at: {
+        type: Sequelize.DATE,
+        allowNull: true
       },
       created_at: {
         allowNull: false,

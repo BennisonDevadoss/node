@@ -19,7 +19,7 @@ export interface UserInstance
     UserAttributes {
   organization?: OrganizationInstance;
   isSuperAdmin(): boolean;
-  // isCustomerAdmin(): boolean;
+  isCustomerAdmin(): boolean;
   isAdmin(): boolean;
   isUser(): boolean;
 }
@@ -81,17 +81,17 @@ function User(sequelize: Sequelize): UserModelDefined {
           key: "id",
         },
         validate: {
-          isOrgIdValidation,
+          // isOrgIdValidation,
         },
       },
       encrypted_password: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
-        // validate: {
-        //     isLengthValid(value: string) {
-        //         isPasswordValidation(value);
-        //     }
-        // }
+        validate: {
+          isLengthValid(value: string) {
+            isPasswordValidation(value);
+          },
+        },
       },
       password: {
         type: DataTypes.VIRTUAL,
@@ -118,10 +118,10 @@ function User(sequelize: Sequelize): UserModelDefined {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-      // confirmed_at: {
-      //   type: DataTypes.DATE,
-      //   allowNull: true,
-      // },
+      confirmed_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       last_otp_verified_at: {
         type: DataTypes.DATE,
         allowNull: true,
@@ -151,7 +151,7 @@ function User(sequelize: Sequelize): UserModelDefined {
       //   allowNull: true,
       // },
       access_token: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
       },
     },
@@ -172,7 +172,7 @@ function User(sequelize: Sequelize): UserModelDefined {
   };
 
   UserModel.prototype.isUser = function (): boolean {
-    return this.role === USER_ROLE.USER;   // ??
+    return this.role === USER_ROLE.USER; // ??
   };
   return UserModel;
 }

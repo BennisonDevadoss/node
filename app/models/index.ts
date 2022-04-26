@@ -1,5 +1,7 @@
 import fs from "fs";
 import path from "path";
+import dotenv from "dotenv";
+dotenv.config();
 // import process from "process";
 import * as sequelize from "sequelize";
 
@@ -20,7 +22,7 @@ if (config.use_env_variable) {
     process.env[config.use_env_variable] //  The error is occurred from here
   );
   dbConfig = new sequelize.Sequelize(
-    "postgres://bennison:bennison@localhost:5432/device_management" as string,
+    process.env[config.use_env_variable] as string,
     config
   );
 } else {
