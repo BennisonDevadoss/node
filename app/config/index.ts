@@ -12,3 +12,5 @@ export const SPEAK_EASY_CONFIG = {
   ENCODING: "base32",
   STEP: 1800,
 };
+
+export const { RESET_PASSWORD_URL } = process.env;

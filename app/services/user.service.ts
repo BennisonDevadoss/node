@@ -14,8 +14,9 @@ import {
   verifyOtp as OtpVerify,
 } from "../lib/otp-handler";
 import { verifyPassword } from "./session.service";
-import { sendOTP } from "../lib/node-mailer";
+import { sendInvitationLink, sendOTP } from "../lib/node-mailer";
 import AssociationValidationError from "../lib/validation-association-error-msg";
+import { RESET_PASSWORD_URL } from "../config";
 // import { verifyOtp as OtpVerify } from "../lib/otp-handler";
 
 const { User } = db;
@@ -49,6 +50,8 @@ async function create(
       currentSiginInAt: user.current_sigin_in_at, // this is not finished yet
     };
     const token = generateTokenforTemp(tokenParams);
+    const resetPasswordUrl = `${RESET_PASSWORD_URL}?password_token=${token}`;
+    sendInvitationLink(attributes.email, resetPasswordUrl, user.name);
     /* Make reset passsword url here and call invitationLink function here */
     return user;
   });

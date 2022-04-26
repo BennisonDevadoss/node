@@ -26,4 +26,16 @@ function sendOTP(to: string, otp: string, userName: string) {
   });
 }
 
-export { sendOTP };
+function sendInvitationLink(to: string, link: string, userName: string) {
+  return transporter.sendMail({
+    to,
+    from: process.env.EMAIL,
+    html: `<p><b>Dear ${userName},</b></p>
+  <p>Your email was used to create an account on ChiefNET Orchestrator Proral.</p>
+  <p>If you did not request it, please ignore this email. If it is something you requested,</p>
+  <p>Please <a href="${link}">click here</a> to reset your password to complete your account setup.</p>
+  <p>Regards, <br/> ChiefNET Team.<br/><a href=https://www.chiefnet.io>ChiefNET Private limited, India.</a>`,
+    subject: "Welcome to ChiefNET!",
+  });
+}
+export { sendOTP, sendInvitationLink };
