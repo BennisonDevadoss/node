@@ -1,18 +1,25 @@
-import { FastifyInstance } from 'fastify'
-import { UserInstance } from '../models/users'
-import deviceRoutes from './device.routes'
+import { FastifyInstance } from "fastify";
+import { UserInstance } from "../models/users";
+import userRoutes from "./user.routes";
+import userAuthHooks from "../hooks/user-authontication.hook";
+import deviceRoutes from "./device.routes";
 
-declare module 'fastify' {
-    interface FastifyRequest {  // I have a doubts on this method
-        currentUser: UserInstance
-    }
+declare module "fastify" {
+  interface FastifyRequest {
+    currentUser: UserInstance;
+  }
 }
 
 function privateRoutes(
-    fastify: FastifyInstance,
-    opts,
-    next: (err?: Error) => void
+  fastify: FastifyInstance,
+  opts: { prefix: string },
+  next: (err?: Error) => void
 ) {
-    // userAuthHooks(fastify);
+  userAuthHooks(fastify);
+  fastify.register(deviceRoutes);
+  fastify.register(userRoutes);
+  next();
 }
-// function privateRoutes(fastify: FastifyInstance, opts: )
+export default privateRoutes;
+
+// // function privateRoutes(fastify: FastifyInstance, opts: )

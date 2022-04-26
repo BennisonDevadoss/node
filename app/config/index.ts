@@ -5,3 +5,10 @@ export const USER_ROLES = ['Super Admin', 'Customer Admin'];
 export const APPLICATION_NAME = 'ChiefNET API Server';
 
 export const DEVICE_TYPE = ['Raspberry_Pi', 'Virtual CPE', 'G1']
+
+export const SPEAK_EASY_CONFIG = {
+    SECRET_KEY_LENGTH: 20,
+    DIGITS: 4,
+    ENCODING: 'base32',
+    STEP: 1800
+}; 

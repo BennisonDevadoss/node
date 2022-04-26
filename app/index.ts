@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
-import build from './application';
+import application from './application';
 
 dotenv.config({ path: `${__dirname}/../.env` });
 
 const PORT: any = process.env.PORT || 4000;
-const fastify: any = build();  // ??
+const fastify = application();  // ??
 
 const start = async () => {
   try {

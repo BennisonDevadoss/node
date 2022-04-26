@@ -10,12 +10,9 @@ function create(req: FastifyRequest, reply: FastifyReply) {
     const attribute = (body as CreateBody).device
     service.create(attribute)
         .then((device) => {
-            console.log('Device is in the then function', device)
-            // if (device)
-                reply.code(200).send('Device Created successfully')
+            reply.code(200).send(device)
         })
         .catch((err) => {
-            console.log('error is', err);
             reply.send(err)
         })
 }
@@ -26,19 +23,14 @@ function update(req: FastifyRequest, reply: FastifyReply) {
     console.log("attribute is ", attributes);
     service.update(attributes)
         .then((device) => {
-            if (device) {
-                reply.code(200).send("Device updated successfully!!")
-            }
-            else {
-                reply.code(404).send('Device not found')
-            }
+            reply.code(201).send(device);
         })
         .catch((err: FastifyError) => {
             reply.send(err)
         })
 }
-function list(req: FastifyRequest, reply: FastifyReply) {
 
+function list(req: FastifyRequest, reply: FastifyReply) {
     const query = req.query as DeviceListQueryParams
     console.log('Request query is', query);   //{ q: '1', visible_columns: 'id,name' }
     service.filterAndPagination(query)

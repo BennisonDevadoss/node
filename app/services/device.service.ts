@@ -6,8 +6,7 @@ import { paginate } from '../lib/paginator-result'
 import { size } from 'lodash' // This package doesn't work 
 import globalSearchQuery from '../queries/device/device-global-search.query';
 import columnSearchQuery from '../queries/device/device-column-search.query';
-import { FastifyError, FastifyReply } from 'fastify';
-import { Model } from 'sequelize/types';
+import AssociationValidationError from '../lib/validation-association-error-msg';
 const Q_MINIMUM_SIZE = 1;
 /* npm install lodash
 npm install --save @types/lodash */
@@ -23,9 +22,6 @@ async function getById(id) {
 async function create(DeviceAttributes: DeviceCreateAttributes) {
     const isDevice = await getById(DeviceAttributes.uuid)
     return await Device.create(DeviceAttributes);
-    // }
-    // console.log("is Device", isDevice);
-    // if (!isDevice) {
 }
 
 async function update(attributes: DeviceUpdateAttributes) {
@@ -35,7 +31,7 @@ async function update(attributes: DeviceUpdateAttributes) {
         return await device.update(attributes);
     }
     else {
-        return 0;
+        throw new AssociationValidationError(`Device type is not matched to uuid ${attributes.uuid}`);
     }
 }
 
