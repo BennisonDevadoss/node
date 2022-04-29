@@ -1,8 +1,8 @@
-"use strict";
-import { DataTypes, Model, ModelDefined, Sequelize } from "sequelize";
-import { DeviceAttributes, DeviceCreateAttributes } from "../types";
-import { isUUIDUnique } from "./validations";
-import { isTypeValidation } from "./validations/device.validation";
+'use strict';
+import { DataTypes, Model, ModelDefined, Sequelize } from 'sequelize';
+import { DeviceAttributes, DeviceCreateAttributes } from '../types';
+import { isUUIDUnique } from './validations';
+import { isTypeValidation } from './validations/device.validation';
 export interface deviceInstance
   extends Model<DeviceAttributes, DeviceCreateAttributes>,
     DeviceAttributes {}
@@ -13,7 +13,7 @@ type DeviceModelDefined = ModelDefined<
 
 function Device(sequelize: Sequelize): DeviceModelDefined {
   return sequelize.define(
-    "Device",
+    'Device',
     {
       name: {
         allowNull: false,
@@ -21,14 +21,14 @@ function Device(sequelize: Sequelize): DeviceModelDefined {
         validate: {
           len: {
             args: [3, 100],
-            msg: "Name should be greater than 3 and less than equal to 100",
+            msg: 'Name should be greater than 3 and less than equal to 100',
           },
           notNull: {
-            msg: "Name should be present",
+            msg: 'Name should be present',
           },
           is: {
             args: [/^[a-zA-Z0-9 _-]*$/],
-            msg: "Only alphanumeric, space, hypen and underscore are allowed",
+            msg: 'Only alphanumeric, space, hypen and underscore are allowed',
           },
         },
       },
@@ -38,18 +38,18 @@ function Device(sequelize: Sequelize): DeviceModelDefined {
         validate: {
           isUUIDUnique,
           notNull: {
-            msg: "UUID should be present",
+            msg: 'UUID should be present',
           },
           len: {
             args: [0, 50],
-            msg: "UUID should be less than or equal to 50",
+            msg: 'UUID should be less than or equal to 50',
           },
           notEmpty: {
-            msg: "UUID should be present",
+            msg: 'UUID should be present',
           },
           is: {
             args: [/^[a-fA-F0-9:-]*$/],
-            msg: "Only hexadecimal, colon and hypen are allowed",
+            msg: 'Only hexadecimal, colon and hypen are allowed',
           },
         },
       },
@@ -63,7 +63,7 @@ function Device(sequelize: Sequelize): DeviceModelDefined {
         validate: {
           isTypeValidation,
           notNull: {
-            msg: "Device type should be present",
+            msg: 'Device type should be present',
           },
         },
       },
@@ -113,12 +113,12 @@ function Device(sequelize: Sequelize): DeviceModelDefined {
       },
     },
     {
-      tableName: "devices",
+      tableName: 'devices',
       paranoid: true,
       underscored: true,
-      deletedAt: "deleted_at",
-      updatedAt: "updated_at",
-      createdAt: "created_at",
+      deletedAt: 'deleted_at',
+      updatedAt: 'updated_at',
+      createdAt: 'created_at',
     }
   ) as DeviceModelDefined;
 }

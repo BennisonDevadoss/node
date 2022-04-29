@@ -1,7 +1,7 @@
-import { FastifyInstance } from "fastify";
-import sessionRoutes from "./session.routes";
-import twoFactorAuthRoutes from "./two-factor-auth-routes";
-import passwordRoutes from "./password.routes";
+import { FastifyInstance } from 'fastify';
+import passwordRoutes from './password.routes';
+import sessionRoutes from './session.routes';
+import twoFactorAuthRoutes from './two-factor-auth-routes';
 function publicRoutes(
   fastify: FastifyInstance,
   opts,

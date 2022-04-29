@@ -1,25 +1,25 @@
-import db from "../models";
-import logger from "../logger";
-import { generateTokenforTemp } from "../lib/jwt-handler";
-import { UserInstance } from "../models/users";
-import { verifyPassword } from "./session.service";
-import { sendInvitationLink, sendOTP } from "../lib/node-mailer";
-import AssociationValidationError from "../lib/validation-association-error-msg";
-import { RESET_PASSWORD_URL } from "../config";
-import { DatabaseError, EmptyResultError } from "sequelize";
 import * as bcrypt from "bcrypt";
 import { forEach, split } from "lodash";
+import { DatabaseError, EmptyResultError } from "sequelize";
+import { RESET_PASSWORD_URL } from "../config";
+import { generateTokenforTemp } from "../lib/jwt-handler";
+import { sendInvitationLink, sendOTP } from "../lib/node-mailer";
+import {
+  generateOtp,
+  generateOtpSecretKey,
+  verifyOtp as OtpVerify,
+} from "../lib/otp-handler";
+import AssociationValidationError from "../lib/validation-association-error-msg";
+import logger from "../logger";
+import db from "../models";
+import { UserInstance } from "../models/users";
 import {
   OTPVerifyAttributes,
   SigninAttributes,
   UserCreationAttributes,
   UserUpdateAttributes,
 } from "../types/user";
-import {
-  generateOtp,
-  generateOtpSecretKey,
-  verifyOtp as OtpVerify,
-} from "../lib/otp-handler";
+import { verifyPassword } from "./session.service";
 
 const { User } = db;
 
@@ -75,17 +75,25 @@ async function create(
 }
 
 async function findConfirmedUserByEmail(email: string) {
-  const user = await User.findOne({ where: { email: email } });
-  console.log("is findConfirmdUserByEmail working", user);
-  return user;
+  const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+  if (email.match(pattern)) {
+    const user = await User.findOne({ where: { email } });
+    console.log("is findConfirmdUserByEmail working", user);
+    return user;
+  }
+  throw new AssociationValidationError("Email should be valid format");
 }
 
 function signin(attributes: SigninAttributes) {
+  console.log("attributes is", attributes);
+  console.log("attributes.email is", attributes.email);
   return findConfirmedUserByEmail(attributes.email).then(async (user) => {
-    // console.log("User is ", user);
+    console.log("User is ", user);
     if (user) {
       const otpSecretKey = await generateOtpSecretKey();
-      const updatedUser = await user.update({ otp_secret_key: otpSecretKey });
+      const updatedUser = await user.update({
+        otp_secret_key: otpSecretKey,
+      });
       const isValid = await verifyPassword(updatedUser, attributes.password);
       if (isValid) {
         const otp = generateOtp(updatedUser.otp_secret_key);
@@ -109,6 +117,7 @@ async function verifyOtp(attributes: OTPVerifyAttributes) {
     console.log("is OTP being verified", isOtpValid);
     const currentDate = new Date();
     user.is_otp_verified = !!isOtpValid;
+    user.current_signin_at = currentDate;
     console.log("is_otp_verified", user.is_otp_verified);
     return user;
   }
@@ -116,7 +125,7 @@ async function verifyOtp(attributes: OTPVerifyAttributes) {
 }
 
 async function getById(id: bigint) {
-  return await User.findOne({ where: { id: id } }).then((user) => {
+  return await User.findOne({ where: { id } }).then((user) => {
     if (user) {
       return user;
     }

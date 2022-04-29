@@ -1,21 +1,21 @@
-import { toUpper } from "lodash";
-import Sequelize from "sequelize";
-import { DeviceListQueryParams } from "../../types/device";
+import { toUpper } from 'lodash';
+import Sequelize from 'sequelize';
+import { DeviceListQueryParams } from '../../types/device';
 
 const { Op } = Sequelize;
 
 const columnSearchQuery = (query: DeviceListQueryParams) => {
-  console.log("column searchQuery function is", query);
+  console.log('column searchQuery function is', query);
   const { name, uuid, id, type, organizatoin_id, mac_address, os_version } =
     query; // did differently
   const lanInterfaces = toUpper(query.lan_interfaces);
   const wanInterfaces = toUpper(query.wan_interfaces);
   const searchQueries: any = [];
-  console.log("column search Query ID is", id);
-  console.log("column search name in query", name);
+  console.log('column search Query ID is', id);
+  console.log('column search name in query', name);
   if (id) {
     const idQuery = Sequelize.where(
-      Sequelize.cast(Sequelize.col("Device.id"), "varchar"),
+      Sequelize.cast(Sequelize.col('Device.id'), 'varchar'),
       {
         [Op.iLike]: `%${id}%`,
       }
@@ -23,14 +23,14 @@ const columnSearchQuery = (query: DeviceListQueryParams) => {
     searchQueries.push(idQuery);
   }
   if (name) {
-    console.log("is name work", name);
+    console.log('is name work', name);
     const nameQuery = { name: { [Op.iLike]: `%${name}%` } };
     searchQueries.push(nameQuery);
   }
   if (uuid) {
     // hardwareIdQuery
-    console.log("is UUID working??", uuid);
-    const UUIDQuery = { uuid: uuid };
+    console.log('is UUID working??', uuid);
+    const UUIDQuery = { uuid };
     searchQueries.push(UUIDQuery);
   }
   if (lanInterfaces) {
@@ -48,7 +48,7 @@ const columnSearchQuery = (query: DeviceListQueryParams) => {
   if (organizatoin_id) {
     // did differently....
     const organizationQuery = Sequelize.where(
-      Sequelize.cast(Sequelize.col("Device.organization_id"), "varchar"),
+      Sequelize.cast(Sequelize.col('Device.organization_id'), 'varchar'),
       {
         [Op.iLike]: `%${organizatoin_id}%`,
       }
@@ -82,12 +82,12 @@ const columnSearchQuery = (query: DeviceListQueryParams) => {
       longitude: { [Op.iLike]: `${query.longitude}` },
     };
   }
-  console.log("column searchQuery is", searchQueries);
+  console.log('column searchQuery is', searchQueries);
   const result = {
     [Op.and]: [searchQueries],
   };
 
-  console.log("Column result is", result);
+  console.log('Column result is', result);
   return result;
 };
 

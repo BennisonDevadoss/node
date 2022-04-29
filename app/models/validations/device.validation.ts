@@ -1,5 +1,5 @@
-import { includes } from "lodash";
-import { DEVICE_TYPE } from "../../config";
+import { includes } from 'lodash';
+import { DEVICE_TYPE } from '../../config';
 
 export function isTypeValidation(value: string, next: (err?: string) => void) {
   if (value) {

@@ -1,20 +1,20 @@
-"use strict";
-import { Model, ModelDefined, Sequelize } from "sequelize/types";
-import { DataTypes } from "sequelize";
-import { isEmailUnique } from "./validations";
-import { OrganizationInstance } from "./organizations";
-import {
-  isPasswordValidation,
-  isRoleValidation,
-  isConfirmPasswordValidation,
-  isOrgIdValidation,
-  // isRole,
-} from "./validations/user.validation";
+'use strict';
+import { DataTypes } from 'sequelize';
+import { Model, ModelDefined, Sequelize } from 'sequelize/types';
 import {
   USER_ROLE,
   UserAttributes,
   UserCreationAttributes,
-} from "../types/user";
+} from '../types/user';
+import { OrganizationInstance } from './organizations';
+import { isEmailUnique } from './validations';
+import {
+  isConfirmPasswordValidation,
+  isOrgIdValidation,
+  isPasswordValidation,
+  isRoleValidation,
+  // isRole,
+} from './validations/user.validation';
 
 export interface UserInstance
   extends Model<UserAttributes, UserCreationAttributes>,
@@ -29,7 +29,7 @@ export interface UserInstance
 type UserModelDefined = ModelDefined<UserAttributes, UserAttributes>;
 function User(sequelize: Sequelize): UserModelDefined {
   const UserModel = sequelize.define(
-    "User",
+    'User',
     {
       name: {
         allowNull: false,
@@ -37,16 +37,16 @@ function User(sequelize: Sequelize): UserModelDefined {
         validate: {
           len: {
             args: [3, 100],
-            msg: "Name should be greater than 3 and less than or equal to 100",
+            msg: 'Name should be greater than 3 and less than or equal to 100',
           },
           notNull: {
-            msg: "Name should be present",
+            msg: 'Name should be present',
           },
           is: {
             // args: [/^[a-zA-Z0-9 _-]*$/],
             // msg: "Only alphanumeric, space, hypen, and underscore are allowed",
             args: [/^[a-zA-Z]*$/],
-            msg: "Only alphapet letters are allowed",
+            msg: 'Only alphapet letters are allowed',
           },
         },
       },
@@ -54,17 +54,20 @@ function User(sequelize: Sequelize): UserModelDefined {
         allowNull: false,
         type: DataTypes.STRING,
         validate: {
-          isEmailUnique,
+          isEmail: {
+            msg: 'email should be valid formate',    // till now it doesn't works
+          },
           len: {
             args: [0, 255],
-            msg: "Email length should be less than or equal to 255",
+            msg: 'Email length should be less than or equal to 255',
           },
           notNull: {
-            msg: "Email should be present",
+            msg: 'Email should be present',
           },
-          isEmail: {
-            msg: "Email shold be valid format",
-          },
+          isEmailUnique,
+          // isEmail: {
+          //   msg: "Email shold be valid format",
+          // },
         },
       },
       role: {
@@ -73,7 +76,7 @@ function User(sequelize: Sequelize): UserModelDefined {
         validate: {
           isRoleValidation,
           notNull: {
-            msg: "Role should be present",
+            msg: 'Role should be present',
           },
         },
       },
@@ -81,8 +84,8 @@ function User(sequelize: Sequelize): UserModelDefined {
         allowNull: false,
         type: DataTypes.STRING, // now added
         references: {
-          model: "organizations",
-          key: "id",
+          model: 'organizations',
+          key: 'id',
         },
         validate: {
           // isOrgIdValidation,
@@ -95,7 +98,7 @@ function User(sequelize: Sequelize): UserModelDefined {
       password: {
         type: DataTypes.VIRTUAL,
         set(val: string) {
-          this.setDataValue("password", val);
+          this.setDataValue('password', val);
         },
         validate: {
           isLengthValid(value: string) {
@@ -107,7 +110,7 @@ function User(sequelize: Sequelize): UserModelDefined {
       password_confirmation: {
         type: DataTypes.VIRTUAL,
         set(val: string) {
-          this.setDataValue("password_confirmation", val);
+          this.setDataValue('password_confirmation', val);
         },
       },
       otp_counter: {
@@ -173,15 +176,15 @@ function User(sequelize: Sequelize): UserModelDefined {
           isConfirmPasswordValidation(this);
         },
       },
-      tableName: "users",
+      tableName: 'users',
       underscored: true,
-      createdAt: "created_at",
-      updatedAt: "updated_at",
-      deletedAt: "deleted_at",
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at',
       paranoid: true,
     }
   );
-  console.log("useerModel is", UserModel);
+  console.log('useerModel is', UserModel);
   UserModel.prototype.isSuperAdmin = function (): boolean {
     return this.role === USER_ROLE.SUPER_ADMIN; // ??
   };

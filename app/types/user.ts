@@ -1,7 +1,7 @@
 export const enum USER_ROLE {
-  SUPER_ADMIN = "Super Admin",
-  ADMIN = "Admin",
-  USER = "User",
+  SUPER_ADMIN = 'Super Admin',
+  ADMIN = 'Admin',
+  USER = 'User',
 }
 
 export interface UserAttributes {
@@ -24,12 +24,12 @@ export interface UserAttributes {
 
 export type UserCreationAttributes = Pick<
   UserAttributes,
-  "name" | "email" | "created_by" | "role" | "organization_id"
+  'name' | 'email' | 'created_by' | 'role' | 'organization_id'
 >;
 
-export type UserUpdateAttributes = Pick<UserAttributes, "name">;
+export type UserUpdateAttributes = Pick<UserAttributes, 'name'>;
 
-export type SigninAttributes = Pick<UserAttributes, "email" | "password">;
+export type SigninAttributes = Pick<UserAttributes, 'email' | 'password'>;
 
 export interface OTPVerifyAttributes {
   ip: string;

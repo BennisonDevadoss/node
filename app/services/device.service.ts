@@ -1,16 +1,16 @@
-import db from "../models";
-import { paginate } from "../lib/paginator-result";
-import { size } from "lodash";
-import globalSearchQuery from "../queries/device/device-global-search.query";
-import columnSearchQuery from "../queries/device/device-column-search.query";
-import AssociationValidationError from "../lib/validation-association-error-msg";
+import { size } from 'lodash';
+import { paginate } from '../lib/paginator-result';
+import AssociationValidationError from '../lib/validation-association-error-msg';
+import db from '../models';
+import columnSearchQuery from '../queries/device/device-column-search.query';
+import globalSearchQuery from '../queries/device/device-global-search.query';
+import orderColumnQuery from '../queries/device/device-order.query';
 // import orders from "../queries/device/device-order.query";
 import {
   DeviceCreateAttributes,
-  DeviceUpdateAttributes,
   DeviceListQueryParams,
-} from "../types";
-import orderColumnQuery from "../queries/device/device-order.query";
+  DeviceUpdateAttributes,
+} from '../types';
 
 const { Device } = db;
 const Q_MINIMUM_SIZE = 1;
@@ -32,14 +32,14 @@ async function create(DeviceAttributes: DeviceCreateAttributes) {
 
 async function update(attributes: DeviceUpdateAttributes) {
   const device = await getById(attributes.uuid);
-  console.log("Device is ", device);
+  console.log('Device is ', device);
   if (device && device.type === attributes.model) {
     return await device.update(attributes);
-  } else {
+  } 
     throw new AssociationValidationError(
       `Device type is not matched to uuid ${attributes.uuid}`
     );
-  }
+  
 }
 
 function filterAndPagination(query: DeviceListQueryParams) {

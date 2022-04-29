@@ -1,4 +1,7 @@
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+
 const { JWT_SECRET_KEY } = process.env;
 
 interface UserAttributes {
@@ -7,7 +10,11 @@ interface UserAttributes {
   currentSiginInAt: Date;
 }
 function generateToken(user: UserAttributes) {
-  return jwt.sign(user, JWT_SECRET_KEY);
+  console.log("JWT_TOKEN_IS", JWT_SECRET_KEY);
+  console.log("user is ", user);
+  const token = jwt.sign(user, JWT_SECRET_KEY);
+  console.log("Token is", token);
+  return token;
 }
 
 function verifyToken(token: string, secretKey: string) {

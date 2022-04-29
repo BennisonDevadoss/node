@@ -1,4 +1,4 @@
-import { DeviceListQueryParams } from "../../types/device";
+import { DeviceListQueryParams } from '../../types/device';
 
 const orderColumnQuery = (query: DeviceListQueryParams) => {
   const id = query.o_id;
@@ -18,50 +18,50 @@ const orderColumnQuery = (query: DeviceListQueryParams) => {
   const orders: any = [];
 
   if (name) {
-    orders.push(["name", name]);
+    orders.push(['name', name]);
   }
   if (uuid) {
-    orders.push(["uuid", uuid]);
+    orders.push(['uuid', uuid]);
   }
   if (lanInterfaces) {
-    orders.push(["lan_interfaces", lanInterfaces]);
+    orders.push(['lan_interfaces', lanInterfaces]);
   }
   if (wanInterfaces) {
-    orders.push(["wan_interfaces", wanInterfaces]);
+    orders.push(['wan_interfaces', wanInterfaces]);
   }
   if (createdAt) {
-    orders.push(["created_at", createdAt]);
+    orders.push(['created_at', createdAt]);
   }
   if (updatedAt) {
-    orders.push(["updated_at", updatedAt]);
+    orders.push(['updated_at', updatedAt]);
   } else {
-    orders.push(["updated_at", "DESC"]);
+    orders.push(['updated_at', 'DESC']);
   }
   if (organizatoinId) {
-    orders.push(["organization_id", organizatoinId]);
+    orders.push(['organization_id', organizatoinId]);
   }
   if (type) {
-    orders.push(["type", type]);
+    orders.push(['type', type]);
   }
   if (macAddress) {
-    orders.push(["mac_address", macAddress]);
+    orders.push(['mac_address', macAddress]);
   }
   if (osVersion) {
-    orders.push(["os_version", osVersion]);
+    orders.push(['os_version', osVersion]);
   }
   if (latitude) {
-    orders.push(["latitude", latitude]);
+    orders.push(['latitude', latitude]);
   }
   if (longitude) {
-    orders.push(["longitude", longitude]);
+    orders.push(['longitude', longitude]);
   }
   if (description) {
-    orders.push(["description", description]);
+    orders.push(['description', description]);
   }
   if (id) {
-    orders.push(["id", id]);
+    orders.push(['id', id]);
   } else {
-    orders.push(["id", "DESC"]);
+    orders.push(['id', 'DESC']);
   }
   return orders;
 };

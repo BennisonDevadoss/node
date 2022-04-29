@@ -1,32 +1,36 @@
 const signinSchema = {
   schema: {
     body: {
-      type: "object",
-      required: ["user"],
+      type: 'object',
+      required: ['user'],
       properties: {
         user: {
-          type: "object",
-          required: ["email, password"],
+          type: 'object',
+          required: ['email', 'password'],
           properties: {
-            email: { type: "string" },
-            password: { type: "string" },
+            email: {
+              description: 'Email of the user',
+              type: 'string',
+              // format: "email",
+            },
+            password: { type: 'string' },
           },
         },
       },
     },
     response: {
       200: {
-        description: "Successfull response",
-        type: "object",
+        description: 'Successfull response',
+        type: 'object',
         properties: {
-          message: { type: "string" },
+          message: { type: 'string' },
         },
       },
       422: {
-        description: "validation error",
-        type: "object",
+        description: 'validation error',
+        type: 'object',
         properties: {
-          errors: { type: "array", items: { type: "string" } },
+          errors: { type: 'array', items: { type: 'string' } },
         },
       },
     },
@@ -36,26 +40,26 @@ const signinSchema = {
 const signoutSchema = {
   schema: {
     headers: {
-      description: "Request header",
-      type: "object",
-      required: ["Authorization"],
+      description: 'Request header',
+      type: 'object',
+      required: ['Authorization'],
       properties: {
-        Authorization: { type: "string" },
+        Authorization: { type: 'string' },
       },
     },
     response: {
       200: {
-        description: "Successful response",
-        type: "object",
+        description: 'Successful response',
+        type: 'object',
         properites: {
-          message: { type: "string" },
+          message: { type: 'string' },
         },
       },
       422: {
-        description: "Validation errors",
-        type: "object",
+        description: 'Validation errors',
+        type: 'object',
         properties: {
-          erors: { type: "array", items: { type: "string" } },
+          erors: { type: 'array', items: { type: 'string' } },
         },
       },
     },

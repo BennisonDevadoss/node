@@ -1,11 +1,11 @@
-import { DataTypes, Model, Sequelize, ModelDefined } from "sequelize";
-import { isNameUnique } from "./validations";
+import { DataTypes, Model, ModelDefined, Sequelize } from 'sequelize';
+import { isNameUnique } from './validations';
 
 import {
   OrganizationAttributes,
   OrganizationCreationAttributes,
-} from "../types/organization";
-import { UserInstance } from "./users";
+} from '../types/organization';
+import { UserInstance } from './users';
 
 export interface OrganizationInstance
   extends Model<OrganizationAttributes, OrganizationCreationAttributes>,
@@ -21,7 +21,7 @@ type OrganizationModelDefined = ModelDefined<
 
 function Organization(sequelize: Sequelize): OrganizationModelDefined {
   return sequelize.define(
-    "organizations",
+    'organizations',
     {
       name: {
         type: DataTypes.STRING,
@@ -30,14 +30,14 @@ function Organization(sequelize: Sequelize): OrganizationModelDefined {
           isNameUnique,
           len: {
             args: [3, 100],
-            msg: "Name should be greater than 3 and less than or equal to 100",
+            msg: 'Name should be greater than 3 and less than or equal to 100',
           },
           notNull: {
-            msg: "Only alphanumeric, space, hypen and underscore are allowed",
+            msg: 'Only alphanumeric, space, hypen and underscore are allowed',
           },
           is: {
             args: [/^[a-zA-Z0-9 _-]*$/],
-            msg: "Only alphanumeric, space, hypen and underscore are allowed",
+            msg: 'Only alphanumeric, space, hypen and underscore are allowed',
           },
         },
       },
@@ -52,11 +52,11 @@ function Organization(sequelize: Sequelize): OrganizationModelDefined {
         validate: {
           len: {
             args: [3, 100],
-            msg: "Client name should be greater than 3 and less than or equal to 100",
+            msg: 'Client name should be greater than 3 and less than or equal to 100',
           },
           is: {
             args: [/^[a-zA-Z0-9 _-]*$/],
-            msg: "Only alphanumeric, space, hypen and underscore are allowed in the client name",
+            msg: 'Only alphanumeric, space, hypen and underscore are allowed in the client name',
           },
         },
       },
@@ -66,7 +66,7 @@ function Organization(sequelize: Sequelize): OrganizationModelDefined {
         defaultValue: 0,
         validate: {
           notNull: {
-            msg: "Provisioned devices count should be present",
+            msg: 'Provisioned devices count should be present',
           },
         },
       },
@@ -76,10 +76,10 @@ function Organization(sequelize: Sequelize): OrganizationModelDefined {
         validate: {
           len: {
             args: [0, 255],
-            msg: "Client email length should be less than or equal to 255",
+            msg: 'Client email length should be less than or equal to 255',
           },
           isEmail: {
-            msg: "Client email should be valid format",
+            msg: 'Client email should be valid format',
           },
         },
       },
@@ -89,7 +89,7 @@ function Organization(sequelize: Sequelize): OrganizationModelDefined {
         validate: {
           len: {
             args: [0, 255],
-            msg: "Client email length should be less than or equel to 15",
+            msg: 'Client email length should be less than or equel to 15',
           },
         },
       },
@@ -99,11 +99,11 @@ function Organization(sequelize: Sequelize): OrganizationModelDefined {
         validate: {
           len: {
             args: [3, 100],
-            msg: "Client name should be greater than 3 and less than or equel to 100",
+            msg: 'Client name should be greater than 3 and less than or equel to 100',
           },
           is: {
             args: [/^[a-zA-Z0-9 _-]*$/],
-            msg: "Only alphanumeric, space, hypen and underscore are allowed in the client name",
+            msg: 'Only alphanumeric, space, hypen and underscore are allowed in the client name',
           },
         },
       },
@@ -115,12 +115,12 @@ function Organization(sequelize: Sequelize): OrganizationModelDefined {
         type: DataTypes.BIGINT,
         allowNull: false,
         references: {
-          model: "users",
-          key: "id",
+          model: 'users',
+          key: 'id',
         },
         validate: {
           notNull: {
-            msg: "Created by should be present",
+            msg: 'Created by should be present',
           },
         },
       },
@@ -128,16 +128,16 @@ function Organization(sequelize: Sequelize): OrganizationModelDefined {
         type: DataTypes.BIGINT,
         allowNull: true,
         references: {
-          model: "users",
-          key: "id",
+          model: 'users',
+          key: 'id',
         },
       },
       deleted_by: {
         type: DataTypes.BIGINT,
         allowNull: true,
         references: {
-          model: "users",
-          key: "id",
+          model: 'users',
+          key: 'id',
         },
       },
       deleted_at: {
@@ -154,13 +154,13 @@ function Organization(sequelize: Sequelize): OrganizationModelDefined {
       },
     },
     {
-      tableName: "organizations",
+      tableName: 'organizations',
       underscored: true,
-      createdAt: "created_at",
-      updatedAt: "updated_at",
-      deletedAt: "deleted_at",
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at',
       paranoid: true,
-      indexes: [{ fields: ["created_by", "updated_by", "deleted_by"] }],
+      indexes: [{ fields: ['created_by', 'updated_by', 'deleted_by'] }],
     }
   ) as OrganizationModelDefined;
 }

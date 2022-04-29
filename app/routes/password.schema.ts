@@ -1,31 +1,31 @@
 const sendOtpSchema = {
   schema: {
     body: {
-      type: "object",
-      required: ["user"],
+      type: 'object',
+      required: ['user'],
       properties: {
         user: {
-          type: "object",
-          required: ["email"],
+          type: 'object',
+          required: ['email'],
           properties: {
-            email: { type: "string" },
+            email: { type: 'string' },
           },
         },
       },
     },
     response: {
       200: {
-        description: "Successfull response",
-        type: "object",
+        description: 'Successfull response',
+        type: 'object',
         properties: {
-          message: { type: "string" },
+          message: { type: 'string' },
         },
       },
       422: {
-        description: "Validation errors",
-        type: "object",
+        description: 'Validation errors',
+        type: 'object',
         properties: {
-          errors: { type: "array", items: { type: "string" } },
+          errors: { type: 'array', items: { type: 'string' } },
         },
       },
     },
@@ -35,33 +35,33 @@ const sendOtpSchema = {
 const resetPasswordSchema = {
   schema: {
     body: {
-      type: "object",
-      required: ["user"],
+      type: 'object',
+      required: ['user'],
       properties: {
         user: {
-          type: "object",
-          required: ["password_token", "password", "password_confirmation"],
+          type: 'object',
+          required: ['password_token', 'password', 'password_confirmation'],
           properties: {
-            password_token: { type: "string" },
-            password: { type: "string" },
-            password_confirmation: { type: "string" },
+            password_token: { type: 'string' },
+            password: { type: 'string' },
+            password_confirmation: { type: 'string' },
           },
         },
       },
     },
-    response: {
+    response: {// Add 500 error
       200: {
-        description: "Successfull response",
-        type: "object",
+        description: 'Successfull response',
+        type: 'object',
         properties: {
-          message: { type: "string" },
+          message: { type: 'string' },
         },
       },
       422: {
-        description: "Validation Error",
-        type: "object",
+        description: 'Validation Error',
+        type: 'object',
         properties: {
-          errors: { type: "string", items: { type: "string" } },
+          errors: { type: 'string', items: { type: 'string' } },
         },
       },
     },

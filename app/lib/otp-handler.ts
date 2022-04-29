@@ -1,5 +1,5 @@
-import speakeasy from "speakeasy";
-import { SPEAK_EASY_CONFIG } from "../config";
+import speakeasy from 'speakeasy';
+import { SPEAK_EASY_CONFIG } from '../config';
 
 function generateOtpSecretKey() {
   const secretKey = speakeasy.generateSecret({

@@ -1,14 +1,14 @@
-import { StringNullableChain } from "lodash";
+import { StringNullableChain } from 'lodash';
 
 export const DEVICE_TYPE = {
-  G1: "G1",
-  RASPBERRY_PI: "Raspberry_Pi",
-  VIRTUAL_CPE: "Virtual CPE",
+  G1: 'G1',
+  RASPBERRY_PI: 'Raspberry_Pi',
+  VIRTUAL_CPE: 'Virtual CPE',
 };
 
 export interface DeviceAttributes {
   name: string;
-  uuid: string; //change is on 27/04/2022
+  uuid: string; // change is on 27/04/2022
   organization_id: bigint;
   type: string;
   lan_interfaces: string[]; // Updated the lan_interface to lan_interfaces
@@ -23,13 +23,13 @@ export interface DeviceAttributes {
 
 export type DeviceCreateAttributes = Pick<
   DeviceAttributes,
-  | "name"
-  | "uuid"
-  | "organization_id"
-  | "type"
-  | "latitude"
-  | "longitude"
-  | "description"
+  | 'name'
+  | 'uuid'
+  | 'organization_id'
+  | 'type'
+  | 'latitude'
+  | 'longitude'
+  | 'description'
 >;
 
 export interface DeviceCreateParams {
@@ -57,13 +57,13 @@ export interface DeviceProvisionParams {
 
 export type DeviceUpdateAttributes = Pick<
   DeviceProvisionParams,
-  | "uuid"
-  | "model"
-  | "os_version"
-  | "mac_address"
-  | "wan_interfaces"
-  | "lan_interfaces"
-  | "package_version"
+  | 'uuid'
+  | 'model'
+  | 'os_version'
+  | 'mac_address'
+  | 'wan_interfaces'
+  | 'lan_interfaces'
+  | 'package_version'
 >;
 
 export interface DeviceUpdateParams {

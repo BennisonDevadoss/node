@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 // const { queryInterface, Sequelize } = require('sequelize/types');
 
 const userAttributes = {
-  name: 'Bennison Devadoss',
+  name: 'Freddy chris',
   email: 'bennisondevadoss@gmail.com',
   encrypted_password: bcrypt.hashSync('bennison', 10),  //bennison
   organization_id: 1,

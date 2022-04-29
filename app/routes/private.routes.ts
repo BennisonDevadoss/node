@@ -1,10 +1,10 @@
-import { FastifyInstance } from "fastify";
-import { UserInstance } from "../models/users";
-import userRoutes from "./user.routes";
-import userAuthHooks from "../hooks/user-authontication.hook";
-import deviceRoutes from "./device.routes";
+import { FastifyInstance } from 'fastify';
+import userAuthHooks from '../hooks/user-authontication.hook';
+import { UserInstance } from '../models/users';
+import deviceRoutes from './device.routes';
+import userRoutes from './user.routes';
 
-declare module "fastify" {
+declare module 'fastify' {
   interface FastifyRequest {
     currentUser: UserInstance;
   }
