@@ -29,7 +29,6 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-
       // Add some colums to this table 
       lan_interfaces: {
         type: Sequelize.JSONB,
@@ -56,10 +55,6 @@ module.exports = {
       //   type: Sequelize.STRING
       // },
       //end
-
-
-
-
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

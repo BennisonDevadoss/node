@@ -26,4 +26,21 @@ function generateTokenforTemp(user) {
   return jwt.sign(user, JWT_SECRET_KEY, { expiresIn: "30min" });
 }
 
-export { generateToken, verifyToken, generateTokenforTemp };
+function verifyTempToken(token: string) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(
+      token,
+      JWT_SECRET_KEY,
+      { expiresIn: "30min" },
+      (err: string, decoded: UserAttributes) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(decoded);
+        }
+      }
+    );
+  });
+}
+
+export { generateToken, verifyToken, generateTokenforTemp, verifyTempToken };

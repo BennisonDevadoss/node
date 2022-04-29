@@ -3,7 +3,6 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import * as UserService from "../services/user.service";
 import { UserInstance } from "../models/users";
 import { generateToken } from "../lib/jwt-handler";
-// import User from "app/models/users";
 
 type CreateBody = { user: OTPVerifyAttributes };
 function verify(req: FastifyRequest, reply: FastifyReply) {

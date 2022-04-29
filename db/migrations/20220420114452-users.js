@@ -1,7 +1,5 @@
 'use strict';
 
-const { default: fastify } = require("fastify");
-
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('users', {

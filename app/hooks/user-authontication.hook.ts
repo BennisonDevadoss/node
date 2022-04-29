@@ -32,20 +32,10 @@ const authenticate = (fastify: FastifyInstance) => {
         await verifyToken(token, JWT_SECRET_KEY)
           .then(async (authData: any) => {
             console.log("is This function working"); //
-            console.log("auth data", authData.email);
-            // const user = await User.findone({
-            //   where: { email: authData.email },
-            // });
-            //, confirmed_at: { [Op.ne]: null }
-
+            console.log("auth data", authData);
             const user = await User.findOne({
               where: { email: authData.email, confirmed_at: { [Op.ne]: null } },
             });
-            //   include: {
-            //     model: Organization,
-            //     as: "organization",
-            //   },
-            
             console.log("is user variable have user --> ", user);
             if (user) {
               req.currentUser = user;

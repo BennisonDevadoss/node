@@ -38,4 +38,6 @@ function sendInvitationLink(to: string, link: string, userName: string) {
     subject: "Welcome to ChiefNET!",
   });
 }
-export { sendOTP, sendInvitationLink };
+
+function sendResetLink(to: string, link: string, userName: string) {}
+export { sendOTP, sendInvitationLink, sendResetLink };

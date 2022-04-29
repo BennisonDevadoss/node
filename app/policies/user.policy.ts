@@ -5,25 +5,26 @@ class UserPolicy {
   constructor(private currentUser: UserInstance) {}
 
   canCreate(UserAttributes: UserCreationAttributes) {
-    // if (this.currentUser.isCustomerAdmin()) {
-    //     return (
-    //         Number(UserAttributes.organization_id) === Number(this.currentUser.organization_id)
-    //     )
-    // }
     if (this.currentUser.isSuperAdmin()) {
+      console.log("create policy permisstion", this.currentUser.isSuperAdmin());
       return this.currentUser.isSuperAdmin();
     }
   }
 
   canlist() {
-    return !!this.currentUser;   // ???
+    return !!this.currentUser; // ???
   }
 
   canUpdate() {
-    return this.currentUser.isSuperAdmin();   //
+    console.log(
+      "update policy permission",
+      this.currentUser.isSuperAdmin() || this.currentUser.isAdmin()
+    );
+    return this.currentUser.isSuperAdmin() || this.currentUser.isAdmin(); //
   }
 
   canDelete() {
+    console.log("delete policy permission is", this.currentUser.isSuperAdmin());
     return this.currentUser.isSuperAdmin();
   }
 }

@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import { FastifyError } from "fastify";
 import application from "./application";
 
 dotenv.config({ path: `${__dirname}/../.env` });

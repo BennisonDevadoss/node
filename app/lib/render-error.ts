@@ -44,4 +44,4 @@ function renderError(reply: FastifyReply, errObj: FastifyError) {
         });
     }
 }
-export default renderError
+export default renderError;

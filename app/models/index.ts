@@ -1,9 +1,8 @@
 import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
-dotenv.config();
-// import process from "process";
 import * as sequelize from "sequelize";
+dotenv.config();
 
 const env = process.env.NODE_ENV || "development";
 console.log("env", env);
@@ -17,10 +16,6 @@ const db: any = {};
 
 let dbConfig: any;
 if (config.use_env_variable) {
-  console.log(
-    "process.env[config.use_env_variable]",
-    process.env[config.use_env_variable] //  The error is occurred from here
-  );
   dbConfig = new sequelize.Sequelize(
     process.env[config.use_env_variable] as string,
     config
@@ -33,7 +28,7 @@ if (config.use_env_variable) {
     config
   );
 }
-// console.log("db------>", dbConfig)
+
 fs.readdirSync(__dirname)
   .filter((file: any) => {
     return (

@@ -1,12 +1,23 @@
 import { USER_ROLES } from "../../config/index";
 import { includes, size } from "lodash";
 import { PASSWORD_LENGTH } from "../../config";
-import { USER_ROLE } from "../../types/user";
+import { UserAttributes, USER_ROLE } from "../../types/user";
 
 export function isPasswordValidation(value: string) {
+  if (!value) {
+    throw new Error("Password should be present");
+  }
   if (value) {
     if (size(value) < PASSWORD_LENGTH) {
       throw new Error("password should be greater than or equal to 8");
+    }
+  }
+}
+
+export function isConfirmPasswordValidation(value) {
+  if (value.password && value.password_confirmation) {
+    if (value.password !== value.password_confirmation) {
+      throw new Error("Password and confirmed password is mismatched");
     }
   }
 }
@@ -16,15 +27,12 @@ export function isRoleValidation(
   value: string,
   next: (err?: string) => void
 ) {
-  if (value) {
+  if (!value) {
+    return next(`User role should be any one of ${USER_ROLES}`);
+  } else if (value) {
     if (!includes(USER_ROLES, value)) {
       return next(`User role should be any one of ${USER_ROLES}`);
     }
-    // if (this.role === USER_ROLE.CUSTOMER_ADMIN) {
-    //     if (!this.organization_id) {
-    //         return next('Organization should be present')
-    //     }
-    // }
     if (this.role === USER_ROLE.SUPER_ADMIN) {
       if (this.organization_id) {
         return next("Organization should not be present");

@@ -21,5 +21,3 @@ function privateRoutes(
   next();
 }
 export default privateRoutes;
-
-// // function privateRoutes(fastify: FastifyInstance, opts: )

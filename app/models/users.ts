@@ -1,19 +1,21 @@
 "use strict";
-
 import { Model, ModelDefined, Sequelize } from "sequelize/types";
 import { DataTypes } from "sequelize";
+import { isEmailUnique } from "./validations";
+import { OrganizationInstance } from "./organizations";
 import {
   isPasswordValidation,
   isRoleValidation,
+  isConfirmPasswordValidation,
   isOrgIdValidation,
+  // isRole,
 } from "./validations/user.validation";
-import { isEmailUnique } from "./validations";
 import {
   USER_ROLE,
   UserAttributes,
   UserCreationAttributes,
 } from "../types/user";
-import { OrganizationInstance } from "./organizations";
+
 export interface UserInstance
   extends Model<UserAttributes, UserCreationAttributes>,
     UserAttributes {
@@ -41,8 +43,10 @@ function User(sequelize: Sequelize): UserModelDefined {
             msg: "Name should be present",
           },
           is: {
-            args: [/^[a-zA-Z0-9 _-]*$/],
-            msg: "Only alphanumeric, space, hypen, and underscore are allowed",
+            // args: [/^[a-zA-Z0-9 _-]*$/],
+            // msg: "Only alphanumeric, space, hypen, and underscore are allowed",
+            args: [/^[a-zA-Z]*$/],
+            msg: "Only alphapet letters are allowed",
           },
         },
       },
@@ -87,11 +91,6 @@ function User(sequelize: Sequelize): UserModelDefined {
       encrypted_password: {
         allowNull: true,
         type: DataTypes.STRING,
-        validate: {
-          isLengthValid(value: string) {
-            isPasswordValidation(value);
-          },
-        },
       },
       password: {
         type: DataTypes.VIRTUAL,
@@ -101,6 +100,7 @@ function User(sequelize: Sequelize): UserModelDefined {
         validate: {
           isLengthValid(value: string) {
             isPasswordValidation(value);
+            isConfirmPasswordValidation(value);
           },
         },
       },
@@ -154,8 +154,25 @@ function User(sequelize: Sequelize): UserModelDefined {
         allowNull: true,
         type: DataTypes.STRING,
       },
+      deleted_at: {
+        allowNull: true,
+        type: DataTypes.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      created_at: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     },
     {
+      validate: {
+        isValidConfirmPassword(this: any) {
+          isConfirmPasswordValidation(this);
+        },
+      },
       tableName: "users",
       underscored: true,
       createdAt: "created_at",
@@ -164,17 +181,17 @@ function User(sequelize: Sequelize): UserModelDefined {
       paranoid: true,
     }
   );
+  console.log("useerModel is", UserModel);
   UserModel.prototype.isSuperAdmin = function (): boolean {
     return this.role === USER_ROLE.SUPER_ADMIN; // ??
   };
   UserModel.prototype.isAdmin = function (): boolean {
     return this.role === USER_ROLE.ADMIN; // ??
   };
-
   UserModel.prototype.isUser = function (): boolean {
     return this.role === USER_ROLE.USER; // ??
   };
   return UserModel;
 }
-
+console.log(this);
 export default User;

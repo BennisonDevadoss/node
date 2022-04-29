@@ -19,7 +19,6 @@ export function isUUIDUnique(this: any, value: string, next: (err?: string) => v
     next();
   }
 }
-
 export function isEmailUnique(this: any, value: string, next: (err?: string) => void) {
   const MODEL = this.constructor;
   if (value) {

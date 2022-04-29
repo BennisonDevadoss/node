@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 // const { queryInterface, Sequelize } = require('sequelize/types');
 
 const userAttributes = {
-  name: 'ben',
+  name: 'Bennison Devadoss',
   email: 'bennisondevadoss@gmail.com',
   encrypted_password: bcrypt.hashSync('bennison', 10),  //bennison
   organization_id: 1,
@@ -33,6 +33,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('users', { email: 'bennisondevadoss2018@gmail.com' });
+    await queryInterface.bulkDelete('users', { email: 'bennisondevadoss@gmail.com' });
   }
 }

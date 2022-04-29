@@ -1,26 +1,27 @@
-// import User from "../models/users"
 import db from "../models";
 import logger from "../logger";
 import { generateTokenforTemp } from "../lib/jwt-handler";
+import { UserInstance } from "../models/users";
+import { verifyPassword } from "./session.service";
+import { sendInvitationLink, sendOTP } from "../lib/node-mailer";
+import AssociationValidationError from "../lib/validation-association-error-msg";
+import { RESET_PASSWORD_URL } from "../config";
+import { DatabaseError, EmptyResultError } from "sequelize";
+import * as bcrypt from "bcrypt";
+import { forEach, split } from "lodash";
 import {
   OTPVerifyAttributes,
   SigninAttributes,
   UserCreationAttributes,
+  UserUpdateAttributes,
 } from "../types/user";
-import { UserInstance } from "../models/users";
 import {
   generateOtp,
   generateOtpSecretKey,
   verifyOtp as OtpVerify,
 } from "../lib/otp-handler";
-import { verifyPassword } from "./session.service";
-import { sendInvitationLink, sendOTP } from "../lib/node-mailer";
-import AssociationValidationError from "../lib/validation-association-error-msg";
-import { RESET_PASSWORD_URL } from "../config";
-// import { verifyOtp as OtpVerify } from "../lib/otp-handler";
 
 const { User } = db;
-// console.log("user from the user.service file", User); //
 
 function frameUserLog(activity, currentUser) {
   const { organization } = currentUser;
@@ -34,11 +35,27 @@ function frameUserLog(activity, currentUser) {
   };
 }
 
+async function generateHase(string, saltRounds) {
+  const hashPassword = await new Promise((resolve) => {
+    bcrypt.hash(string, saltRounds).then((hash) => {
+      resolve(hash);
+    });
+  });
+  console.log("hash password is ", hashPassword);
+  return hashPassword;
+}
+
+async function list(currentuser: UserInstance) {
+  return User.findAll({ paranoid: false });
+}
+
 async function create(
   attributes: UserCreationAttributes,
   currentUser: UserInstance
 ) {
-  return User.create(attributes).then((user) => {
+  console.log("attributes are", attributes);
+  return await User.create(attributes).then((user) => {
+    //
     const info = frameUserLog("User Creation", currentUser);
     logger.info(
       info,
@@ -47,12 +64,12 @@ async function create(
     const tokenParams = {
       userId: user.id,
       email: user.email,
-      currentSiginInAt: user.current_sigin_in_at, // this is not finished yet
+      currentSiginInAt: user.current_sigin_in_at,
     };
     const token = generateTokenforTemp(tokenParams);
+    console.log("Token is", token);
     const resetPasswordUrl = `${RESET_PASSWORD_URL}?password_token=${token}`;
     sendInvitationLink(attributes.email, resetPasswordUrl, user.name);
-    /* Make reset passsword url here and call invitationLink function here */
     return user;
   });
 }
@@ -68,8 +85,8 @@ function signin(attributes: SigninAttributes) {
     // console.log("User is ", user);
     if (user) {
       const otpSecretKey = await generateOtpSecretKey();
-      const updatedUser = await user.update({ otp_secret_key: otpSecretKey }); // Why this is not taken as a sequelize function
-      const isValid = await verifyPassword(updatedUser, attributes.password); // worked
+      const updatedUser = await user.update({ otp_secret_key: otpSecretKey });
+      const isValid = await verifyPassword(updatedUser, attributes.password);
       if (isValid) {
         const otp = generateOtp(updatedUser.otp_secret_key);
         console.log("OTP is", otp);
@@ -93,11 +110,82 @@ async function verifyOtp(attributes: OTPVerifyAttributes) {
     const currentDate = new Date();
     user.is_otp_verified = !!isOtpValid;
     console.log("is_otp_verified", user.is_otp_verified);
-    // if (user.is_otp_verified) {
-    // }
     return user;
   }
   throw new AssociationValidationError("No User found");
 }
 
-export { create, signin, verifyOtp };
+async function getById(id: bigint) {
+  return await User.findOne({ where: { id: id } }).then((user) => {
+    if (user) {
+      return user;
+    }
+    throw new EmptyResultError("No user found");
+  });
+}
+
+function getByEmail(email: string) {
+  return User.findOne({ where: { email } }).then((user: UserInstance) => {
+    if (user) {
+      return user;
+    }
+    throw new EmptyResultError("No user found");
+  });
+}
+
+function update(
+  id: bigint,
+  attributes: UserUpdateAttributes,
+  currentUser: UserInstance
+) {
+  return getById(id).then((user: UserInstance) => {
+    const UpdateAttributes: UserUpdateAttributes = {
+      name: attributes.name,
+    };
+    return user.update(UpdateAttributes).then((userData) => {
+      const info = frameUserLog("User Updation", currentUser);
+      logger.info(
+        info,
+        `User ${currentUser.name} (user_id: ${currentUser.id}, role:${currentUser.role} has updated the user ${userData.name} (id: ${userData.id}))`
+      );
+      return userData;
+    });
+  });
+}
+
+function destroy(ids: string, currentUser: UserInstance) {
+  const userIds = split(ids, ",");
+  console.log("User ids are", userIds);
+  return User.destroy({ where: { id: userIds } })
+    .then((users) => {
+      console.log("is this works 1");
+      forEach(users, (users) => {
+        console.log("is this works 2");
+        const info = frameUserLog("User Deletion", currentUser);
+        logger.info(
+          info,
+          `User ${currentUser.name} (user_id: ${currentUser.id}, role: ${currentUser.role}) has deleted the user ${users.name} (id: ${users.id})`
+        );
+      });
+      return users;
+    })
+    .catch((error: any) => {
+      if (error instanceof DatabaseError) {
+        throw new DatabaseError({
+          message: "Bad reequest please check parameters",
+          name: "DatabaseError",
+        });
+      }
+    });
+}
+export {
+  create,
+  signin,
+  list,
+  update,
+  destroy,
+  verifyOtp,
+  getById,
+  getByEmail,
+  generateHase,
+};

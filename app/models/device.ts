@@ -1,16 +1,19 @@
-'use strict';
-import { DataTypes, Model, ModelDefined, Sequelize } from 'sequelize';
-import { DeviceAttributes, DeviceCreateAttributes } from '../types';
-import { isUUIDUnique } from './validations';
-import { isTypeValidation } from './validations/device.validation'
+"use strict";
+import { DataTypes, Model, ModelDefined, Sequelize } from "sequelize";
+import { DeviceAttributes, DeviceCreateAttributes } from "../types";
+import { isUUIDUnique } from "./validations";
+import { isTypeValidation } from "./validations/device.validation";
 export interface deviceInstance
   extends Model<DeviceAttributes, DeviceCreateAttributes>,
-  DeviceAttributes { }
-type DeviceModelDefined = ModelDefined<DeviceAttributes, DeviceCreateAttributes>;
+    DeviceAttributes {}
+type DeviceModelDefined = ModelDefined<
+  DeviceAttributes,
+  DeviceCreateAttributes
+>;
 
 function Device(sequelize: Sequelize): DeviceModelDefined {
   return sequelize.define(
-    'Device',
+    "Device",
     {
       name: {
         allowNull: false,
@@ -18,16 +21,16 @@ function Device(sequelize: Sequelize): DeviceModelDefined {
         validate: {
           len: {
             args: [3, 100],
-            msg: 'Name should be greater than 3 and less than equal to 100',
+            msg: "Name should be greater than 3 and less than equal to 100",
           },
           notNull: {
-            msg: 'Name should be present'
+            msg: "Name should be present",
           },
           is: {
             args: [/^[a-zA-Z0-9 _-]*$/],
-            msg: 'Only alphanumeric, space, hypen and underscore are allowed'
-          }
-        }
+            msg: "Only alphanumeric, space, hypen and underscore are allowed",
+          },
+        },
       },
       uuid: {
         allowNull: false,
@@ -35,51 +38,50 @@ function Device(sequelize: Sequelize): DeviceModelDefined {
         validate: {
           isUUIDUnique,
           notNull: {
-            msg: 'UUID should be present'
+            msg: "UUID should be present",
           },
           len: {
             args: [0, 50],
-            msg: 'UUID should be less than or equal to 50'
+            msg: "UUID should be less than or equal to 50",
           },
           notEmpty: {
-            msg: 'UUID should be present'
+            msg: "UUID should be present",
           },
           is: {
             args: [/^[a-fA-F0-9:-]*$/],
-            msg: 'Only hexadecimal, colon and hypen are allowed'
-          }
-        }
+            msg: "Only hexadecimal, colon and hypen are allowed",
+          },
+        },
       },
       organization_id: {
         allowNull: false,
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       type: {
         allowNull: false,
         type: DataTypes.STRING,
-        // values: ['Virtual CPE', ' Raspberry_Pi', 'G1']
         validate: {
           isTypeValidation,
           notNull: {
-            msg: 'Device type should be present'
-          }
-        }
+            msg: "Device type should be present",
+          },
+        },
       },
       latitude: {
         allowNull: true,
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       longitude: {
         allowNull: true,
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       lan_interfaces: {
         allowNull: true,
-        type: DataTypes.JSONB
+        type: DataTypes.JSONB,
       },
       wan_interfaces: {
         allowNull: true,
-        type: DataTypes.JSONB
+        type: DataTypes.JSONB,
       },
       mac_address: {
         allowNull: true,
@@ -87,24 +89,36 @@ function Device(sequelize: Sequelize): DeviceModelDefined {
       },
       os_version: {
         allowNull: true,
-        type: DataTypes.JSONB
+        type: DataTypes.JSONB,
       },
       package_version: {
         allowNull: true,
-        type: DataTypes.JSONB
+        type: DataTypes.JSONB,
       },
       description: {
         allowNull: true,
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+      },
+      deleted_at: {
+        allowNull: true,
+        type: DataTypes.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      created_at: {
+        allowNull: false,
+        type: DataTypes.DATE,
       },
     },
     {
-      tableName: 'devices',
+      tableName: "devices",
       paranoid: true,
       underscored: true,
-      deletedAt: 'deleted_at',
-      updatedAt: 'updated_at',
-      createdAt: 'created_at'
+      deletedAt: "deleted_at",
+      updatedAt: "updated_at",
+      createdAt: "created_at",
     }
   ) as DeviceModelDefined;
 }

@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import { is } from "sequelize/types/lib/operators";
 import { UserAttributes } from "../types/user";
 
 function verifyPassword(user: UserAttributes, passsword: string) {

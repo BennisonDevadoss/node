@@ -1,17 +1,17 @@
-import pino from 'pino';
-import moment from 'moment';
-import { APPLICATION_NAME } from './config';
+import pino from "pino";
+import moment from "moment";
+import { APPLICATION_NAME } from "./config";
 
-const logLevel = process.env.LOG_LEVEL || 'info';
+const logLevel = process.env.LOG_LEVEL || "info";
 const logConfig = {
-    name: APPLICATION_NAME,
-    level: logLevel,
-    timestamp: () => `,"time":"${moment.utc()}"`,
-    formatters: {
-        level(lable: string) {
-            return { level: lable };
-        }
-    }
+  name: APPLICATION_NAME,
+  level: logLevel,
+  timestamp: () => `,"time":"${moment.utc()}"`,
+  formatters: {
+    level(lable: string) {
+      return { level: lable };
+    },
+  },
 };
 
 const logger = pino(logConfig);
