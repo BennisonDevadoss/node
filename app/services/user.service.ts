@@ -1,7 +1,7 @@
 import * as bcrypt from "bcrypt";
 import { forEach, split } from "lodash";
 import { DatabaseError, EmptyResultError } from "sequelize";
-import { RESET_PASSWORD_URL } from "../config";
+import { RESET_PASSWORD_URL, EMAIL_PATTERN } from "../config";
 import { generateTokenforTemp } from "../lib/jwt-handler";
 import { sendInvitationLink, sendOTP } from "../lib/node-mailer";
 import {
@@ -75,8 +75,7 @@ async function create(
 }
 
 async function findConfirmedUserByEmail(email: string) {
-  const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-  if (email.match(pattern)) {
+  if (email.match(EMAIL_PATTERN)) {
     const user = await User.findOne({ where: { email } });
     console.log("is findConfirmdUserByEmail working", user);
     return user;
