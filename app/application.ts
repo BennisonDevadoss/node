@@ -1,10 +1,10 @@
-import fastify, { FastifyInstance } from "fastify";
-import { IncomingMessage, Server, ServerResponse } from "http";
-import renderError from "./lib/render-error";
-import privateRoutes from "./routes/private.routes";
-import publicRoutes from "./routes/public.routes";
-import swagger from "fastify-swagger";
-import swaggerOptions from "./lib/swagger";
+import fastify, { FastifyInstance } from 'fastify';
+import swagger from 'fastify-swagger';
+import { IncomingMessage, Server, ServerResponse } from 'http';
+import renderError from './lib/render-error';
+import swaggerOptions from './lib/swagger';
+import privateRoutes from './routes/private.routes';
+import publicRoutes from './routes/public.routes';
 
 const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   fastify({

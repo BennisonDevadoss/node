@@ -35,11 +35,11 @@ async function update(attributes: DeviceUpdateAttributes) {
   console.log('Device is ', device);
   if (device && device.type === attributes.model) {
     return await device.update(attributes);
-  } 
-    throw new AssociationValidationError(
+  }
+  throw new AssociationValidationError(
       `Device type is not matched to uuid ${attributes.uuid}`
     );
-  
+
 }
 
 function filterAndPagination(query: DeviceListQueryParams) {

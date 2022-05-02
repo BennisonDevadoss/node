@@ -1,0 +1,1 @@
+### Sequelize is updated wrongly

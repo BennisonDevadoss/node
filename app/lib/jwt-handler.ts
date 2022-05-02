@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 dotenv.config();
 
 const { JWT_SECRET_KEY } = process.env;
@@ -10,10 +10,10 @@ interface UserAttributes {
   currentSiginInAt: Date;
 }
 function generateToken(user: UserAttributes) {
-  console.log("JWT_TOKEN_IS", JWT_SECRET_KEY);
-  console.log("user is ", user);
+  console.log('JWT_TOKEN_IS', JWT_SECRET_KEY);
+  console.log('user is ', user);
   const token = jwt.sign(user, JWT_SECRET_KEY);
-  console.log("Token is", token);
+  console.log('Token is', token);
   return token;
 }
 
@@ -30,7 +30,7 @@ function verifyToken(token: string, secretKey: string) {
 }
 
 function generateTokenforTemp(user) {
-  return jwt.sign(user, JWT_SECRET_KEY, { expiresIn: "30min" });
+  return jwt.sign(user, JWT_SECRET_KEY, { expiresIn: '30min' });
 }
 
 function verifyTempToken(token: string) {
@@ -38,7 +38,7 @@ function verifyTempToken(token: string) {
     jwt.verify(
       token,
       JWT_SECRET_KEY,
-      { expiresIn: "30min" },
+      { expiresIn: '30min' },
       (err: string, decoded: UserAttributes) => {
         if (err) {
           reject(err);

@@ -3,9 +3,9 @@ import UserPolicy from '../policies/user.policy';
 import * as UserService from '../services/user.service';
 import { UserCreationAttributes, UserUpdateAttributes } from '../types/user';
 
-interface CreateBody { user: UserCreationAttributes }
-interface UpdateBody { user: UserUpdateAttributes }
-interface UserDeleteQueryParams { ids: string }
+interface CreateBody { user: UserCreationAttributes; }
+interface UpdateBody { user: UserUpdateAttributes; }
+interface UserDeleteQueryParams { ids: string; }
 
 function list(req: FastifyRequest, reply: FastifyReply) {
   const { currentUser } = req;

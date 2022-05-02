@@ -2,7 +2,7 @@ import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import * as UserService from '../services/user.service';
 import { SigninAttributes } from '../types/user';
 
-interface CreateBody { user: SigninAttributes }
+interface CreateBody { user: SigninAttributes; }
 function signin(req: FastifyRequest, reply: FastifyReply) {
   const { body } = req;
   const attributes = (body as CreateBody).user;

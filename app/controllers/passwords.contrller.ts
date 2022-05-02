@@ -3,8 +3,8 @@ import { verifyTempToken } from '../lib/jwt-handler';
 import * as passwordService from '../services/password.service';
 import { ResendOtpAttributes, resetPasswordAttributes } from '../types/user';
 
-interface ResetPasswordBody { user: resetPasswordAttributes }
-interface ResendOtpBody { user: ResendOtpAttributes }
+interface ResetPasswordBody { user: resetPasswordAttributes; }
+interface ResendOtpBody { user: ResendOtpAttributes; }
 
 function resetPasswordLink(req: FastifyRequest, reply: FastifyReply) {
   const { body } = req;
