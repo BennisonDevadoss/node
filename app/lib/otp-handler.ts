@@ -5,6 +5,7 @@ function generateOtpSecretKey() {
   const secretKey = speakeasy.generateSecret({
     length: SPEAK_EASY_CONFIG.SECRET_KEY_LENGTH,
   });
+  console.log('SecretKey is', secretKey);
   return secretKey.base32;
 }
 

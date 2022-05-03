@@ -28,9 +28,9 @@ function renderError(reply: FastifyReply, errObj: FastifyError) {
     const messages = map(errObj.errors, (error: any) => error.message);
     reply.code(422).send({ errors: messages });
   } else if (errObj instanceof DatabaseError) {
-      const messages = errObj.message || errObj.original;
-      reply.code(400).send({ errors: [messages] });
-    } else if (errObj instanceof AssociationValidationError) {
+    const messages = errObj.message || errObj.original;
+    reply.code(400).send({ errors: [messages] });
+  } else if (errObj instanceof AssociationValidationError) {
       reply.code(422).send({ errors: [errObj.message] });
     } else if (
         errObj.statusCode &&

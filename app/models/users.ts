@@ -45,7 +45,7 @@ function User(sequelize: Sequelize): UserModelDefined {
           is: {
             // args: [/^[a-zA-Z0-9 _-]*$/],
             // msg: "Only alphanumeric, space, hypen, and underscore are allowed",
-            args: [/^[a-zA-Z]*$/],
+            args: [/^[a-zA-Z ]*$/],
             msg: 'Only alphapet letters are allowed',
           },
         },
